@@ -75,7 +75,7 @@ git clone [https://github.com/tongjookim/Sagaksagak-WP-Theme-.git](https://githu
 워드프레스 관리자 화면의 외모 > 테마 > 새로 추가 > 테마 업로드에서 설치 후 활성화합니다.
 (경로: ```/wp-content/themes/sagaksagak```)
 
-🤖 AI로 테마 커스텀하기
+## 🤖 AI로 테마 커스텀하기
 이 테마의 진정한 위력은 AI 연동에서 나옵니다. 더 정교한 코드 수정을 위해 Claude Code, Gemini Code, OpenAI Codex 사용을 강력 권장합니다.
 
 1. functions.php나 style.css 코드를 AI에게 전달합니다.
