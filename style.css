@@ -1,0 +1,1759 @@
+/*
+Theme Name: 사각사각 테마
+Theme URI: https://www.swn.kr
+Author: The Suwan News Company
+Description: 워드프레스 코어 필수 스타일 전체 복구 + 모바일 5열 그리드, 채팅형 댓글, SNS 더보기 완벽 통합 버전.
+Version: 3.1 Final
+Text Domain: sagaksagak
+*/
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* ==========================================================================
+   0. CSS 디자인 변수 (Design Tokens)
+   - 색상이나 z-index를 변경할 때 이 섹션만 수정하면 됩니다.
+========================================================================== */
+:root {
+    --color-primary:     #00c73c;
+    --color-header:      #795548;
+    --color-text:        #333;
+    --color-text-muted:  #999;
+    --color-border:      #eee;
+    --color-bg:          #fff;
+    --color-bg-soft:     #f5f5f5;
+
+    --radius-sm:  2px;
+    --radius-md:  4px;
+
+    --z-base:     1;
+    --z-header:   100;
+    --z-dropdown: 200;
+    --z-overlay:  9999;
+
+    /* 수직 간격 토큰 — 이 값들을 수정하면 사이트 전체 리듬이 함께 변합니다 */
+    --space-xs:   8px;
+    --space-sm:   16px;
+    --space-md:   24px;
+    --space-lg:   40px;
+    --space-xl:   64px;
+
+    /* 모바일 고정 헤더 높이 — fixed 보정에 사용 */
+    --mobile-header-height: 52px;
+}
+
+/* ==========================================================================
+   1. 기본 초기화 (Reset & Normalize)
+   - 사이트가 깨지지 않도록 기본 여백과 폰트를 초기화합니다.
+========================================================================== */
+*, 
+*::before, 
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    /* 앵커 점프 시 fixed 헤더에 가려지지 않도록 오프셋 보정 */
+    scroll-padding-top: var(--mobile-header-height);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    word-wrap: break-word;
+    word-break: keep-all;
+}
+
+main { 
+    display: block; 
+}
+
+h1, h2, h3, h4, h5, h6 { 
+    margin-top: 0; 
+    margin-bottom: 0.5rem; 
+    font-weight: 700; 
+    color: #111; 
+    line-height: 1.3; 
+}
+
+p { 
+    margin-top: 0; 
+    margin-bottom: 1rem; 
+}
+
+ul, ol { 
+    margin-top: 0; 
+    margin-bottom: 1rem; 
+    padding-left: 2rem; 
+}
+
+a { 
+    color: inherit; 
+    text-decoration: none; 
+    transition: all 0.2s ease-in-out; 
+    background-color: transparent; 
+}
+
+a:hover { 
+    text-decoration: none; 
+}
+
+img { 
+    border-style: none; 
+    max-width: 100%; 
+    height: auto; 
+    display: block; 
+}
+
+button, input, optgroup, select, textarea { 
+    font-family: inherit; 
+    font-size: 100%; 
+    line-height: 1.15; 
+    margin: 0; 
+}
+
+button, input { 
+    overflow: visible; 
+}
+
+button, select { 
+    text-transform: none; 
+}
+
+button, [type="button"], [type="reset"], [type="submit"] { 
+    -webkit-appearance: button; 
+    cursor: pointer; 
+}
+
+textarea { 
+    overflow: auto; 
+    resize: vertical; 
+}
+
+figure { 
+    margin: 0 0 1rem; 
+}
+
+.container { 
+    max-width: 1080px; 
+    margin: 0 auto; 
+    padding: 0 20px; 
+    width: 100%; 
+}
+
+.mobile-only { 
+    display: none !important; 
+}
+
+.desktop-only { 
+    display: block; 
+}
+
+/* ==========================================================================
+   2. 워드프레스 코어 필수 클래스 (이 부분이 없으면 본문 이미지가 깨집니다)
+========================================================================== */
+.alignnone { 
+    margin: 5px 20px 20px 0; 
+}
+
+.aligncenter, 
+div.aligncenter { 
+    display: block; 
+    margin: 5px auto 5px auto; 
+    text-align: center; 
+}
+
+.alignright { 
+    float: right; 
+    margin: 5px 0 20px 20px; 
+}
+
+.alignleft { 
+    float: left; 
+    margin: 5px 20px 20px 0; 
+}
+
+a img.alignright { 
+    float: right; 
+    margin: 5px 0 20px 20px; 
+}
+
+a img.alignnone { 
+    margin: 5px 20px 20px 0; 
+}
+
+a img.alignleft { 
+    float: left; 
+    margin: 5px 20px 20px 0; 
+}
+
+a img.aligncenter { 
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
+}
+
+.wp-caption { 
+    background: #fff; 
+    border: 1px solid #f0f0f0; 
+    max-width: 96%; 
+    padding: 5px 3px 10px; 
+    text-align: center; 
+    margin-bottom: 20px; 
+}
+
+.wp-caption.alignnone { 
+    margin: 5px 20px 20px 0; 
+}
+
+.wp-caption.alignleft { 
+    margin: 5px 20px 20px 0; 
+}
+
+.wp-caption.alignright { 
+    margin: 5px 0 20px 20px; 
+}
+
+.wp-caption img { 
+    border: 0 none; 
+    height: auto; 
+    margin: 0; 
+    max-width: 98.5%; 
+    padding: 0; 
+    width: auto; 
+}
+
+.wp-caption p.wp-caption-text { 
+    font-size: 13px; 
+    line-height: 1.5; 
+    margin: 0; 
+    padding: 10px 0 5px; 
+    color: #777; 
+}
+
+.screen-reader-text { 
+    border: 0; 
+    clip: rect(1px, 1px, 1px, 1px); 
+    clip-path: inset(50%); 
+    height: 1px; 
+    margin: -1px; 
+    overflow: hidden; 
+    padding: 0; 
+    position: absolute !important; 
+    width: 1px; 
+    word-wrap: normal !important; 
+}
+
+.clear:before, 
+.clear:after { 
+    content: ""; 
+    display: table; 
+    table-layout: fixed; 
+}
+
+.clear:after { 
+    clear: both; 
+}
+
+.gallery { 
+    margin-bottom: 1.5em; 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 10px; 
+}
+
+.gallery-item { 
+    display: inline-block; 
+    text-align: center; 
+    width: 100%; 
+}
+
+.gallery-caption { 
+    display: block; 
+    font-size: 13px; 
+    color: #777; 
+    margin-top: 5px; 
+}
+
+/* 관리자 바 대응 */
+.admin-bar .site-header { 
+    top: 32px; 
+}
+
+.admin-bar .mobile-overlay-menu { 
+    top: 32px; 
+    height: calc(100% - 32px); 
+}
+
+@media screen and (max-width: 782px) {
+    .admin-bar .site-header { 
+        top: 46px; 
+    }
+    .admin-bar .mobile-overlay-menu { 
+        top: 46px; 
+        height: calc(100% - 46px); 
+    }
+}
+
+/* ==========================================================================
+   3. 헤더 영역 (PC 및 모바일 메뉴)
+========================================================================== */
+.site-header {
+    padding: 15px 0;
+    font-size: 14px;
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.header-inner { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.header-left { 
+    display: flex; 
+    align-items: center; 
+}
+
+.header-logo { 
+    font-weight: 800; 
+    font-size: 18px; 
+    color: #000; 
+    letter-spacing: -0.5px; 
+}
+
+.header-sub-menu { 
+    display: flex; 
+    align-items: center; 
+    margin-left: 15px; 
+    color: #888; 
+    font-size: 14px; 
+}
+
+.header-sub-menu .divider { 
+    margin-right: 10px; 
+    color: #ddd; 
+}
+
+.header-sub-menu ul { 
+    list-style: none; 
+    display: flex; 
+    gap: 15px; 
+    margin: 0; 
+    padding: 0; 
+}
+
+.header-sub-menu ul li a:hover { 
+    color: #111; 
+    text-decoration: underline; 
+}
+
+.header-nav ul { 
+    list-style: none; 
+    display: flex; 
+    gap: 20px; 
+    color: #555; 
+    font-size: 14px; 
+    font-weight: 500; 
+    margin: 0; 
+    padding: 0; 
+}
+
+.header-nav ul li a:hover { 
+    color: #00c73c; 
+}
+
+.mobile-menu-toggle { 
+    display: none; 
+    font-size: 24px; 
+    cursor: pointer; 
+    color: #333; 
+}
+
+/* 모바일 오버레이 메뉴 */
+.mobile-overlay-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: var(--z-overlay);
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-overlay-menu.active {
+    right: 0;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.12);
+}
+
+/* 오버레이 헤더 — flex 정렬로 닫기 버튼·타이틀 수평 배치 */
+.mobile-menu-header {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 20px;
+    height: 54px;
+    flex-shrink: 0;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.mobile-menu-close {
+    /* absolute 제거 → flex 아이템으로 자연 배치 */
+    position: static;
+    top: auto;
+    left: auto;
+    transform: none;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    color: #555;
+    padding: 8px;
+    margin-right: 4px;
+    border-radius: var(--radius-md);
+    transition: background 0.15s, color 0.15s;
+}
+
+.mobile-menu-close:hover {
+    background: #f5f5f5;
+    color: #111;
+}
+
+.mobile-menu-header h2 {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+    text-align: center;
+    /* 닫기 버튼 너비(≈36px)만큼 오른쪽 여백을 줘서 타이틀이 시각적으로 가운데 정렬되게 함 */
+    padding-right: 36px;
+}
+
+/* 스크롤 가능한 리스트 영역 */
+.mobile-menu-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mobile-category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-category-list li {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.mobile-category-list li:last-child {
+    border-bottom: none;
+}
+
+/* 핵심: 이름(왼쪽) / 숫자(오른쪽) — 모든 항목이 동일 구조 */
+.mobile-category-list li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #222;
+    width: 100%;
+    transition: background 0.12s;
+}
+
+.mobile-category-list li a:active,
+.mobile-category-list li a:hover {
+    background: #f5f5f5;
+    color: #111;
+}
+
+.mobile-category-list .cat-name {
+    flex: 1;
+    margin-right: 12px;
+}
+
+.mobile-category-list .count {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-primary);
+    background: rgba(0, 199, 60, 0.1);
+    padding: 3px 9px;
+    border-radius: 10px;
+    min-width: 28px;
+    text-align: center;
+}
+
+/* ==========================================================================
+   3.5. CTA 바 (전환 유도 — "블로그 주인과 바로 대화해보세요")
+========================================================================== */
+.cta-bar {
+    background: var(--color-primary);
+    color: #fff;
+    padding: 11px 0;
+}
+
+.cta-bar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.cta-bar-text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.cta-bar-btn {
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    padding: 6px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+
+.cta-bar-btn:hover {
+    background: rgba(0, 0, 0, 0.12);
+    color: #fff;
+}
+
+/* ==========================================================================
+   4. 메인 레이아웃 및 전체 구조
+========================================================================== */
+.site-content {
+    display: flex;
+    margin-top: 40px;
+    gap: 48px;
+    margin-bottom: 70px;
+}
+
+.main-area { 
+    width: 75%; 
+}
+
+.sidebar-area { 
+    width: 25%; 
+}
+
+/* ==========================================================================
+   5. 글 목록 (리스트) 및 PC 페이징
+========================================================================== */
+.post-list-wrap { 
+    border-top: 2px solid #222; 
+    border-bottom: 1px solid #eee; 
+    margin-bottom: 50px; 
+    background: #fff; 
+}
+
+.post-list-header { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 15px 5px; 
+    border-bottom: 1px solid #eee; 
+    font-size: 14px; 
+    color: #555; 
+    align-items: center; 
+}
+
+.post-list-header h2 { 
+    margin: 0; 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: #111; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    gap: 5px; 
+}
+
+.list-options { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    font-size: 13px; 
+}
+
+.post-list-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 5px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+    align-items: center;
+}
+
+.post-list-item:last-child { 
+    border-bottom: none; 
+}
+
+.post-list-item-main { 
+    flex: 1; 
+}
+
+.post-list-item a { 
+    font-weight: 600; 
+    color: #222; 
+    letter-spacing: -0.3px; 
+}
+
+.post-list-item a:hover { 
+    color: #00c73c; 
+    text-decoration: underline; 
+}
+
+.post-list-date { 
+    color: #999; 
+    font-size: 13px; 
+    white-space: nowrap; 
+    margin-left: 20px; 
+}
+
+.post-list-excerpt { 
+    display: none; 
+    color: #777; 
+    font-size: 14px; 
+    margin-top: 8px; 
+    line-height: 1.5; 
+}
+
+/* PC 번호 페이징 디자인 (완벽 복원) */
+.post-list-pagination { 
+    display: flex; 
+    justify-content: center; 
+    gap: 6px; 
+    margin: 40px 0; 
+}
+
+.post-list-pagination .page-numbers { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    min-width: 36px; 
+    height: 36px; 
+    padding: 0 10px; 
+    border: 1px solid #e0e0e0; 
+    color: #555; 
+    background: #fff; 
+    font-size: 14px; 
+    font-weight: 500; 
+    border-radius: 4px; 
+    transition: all 0.2s; 
+}
+
+.post-list-pagination a.page-numbers:hover { 
+    border-color: #333; 
+    color: #333; 
+    background: #fafafa; 
+}
+
+.post-list-pagination .page-numbers.current { 
+    border-color: #00c73c; 
+    background: #00c73c; 
+    color: #fff; 
+    font-weight: 700; 
+}
+
+/* ==========================================================================
+   6. 개별 포스트 본문 디자인
+========================================================================== */
+.post-category { 
+    color: #00c73c; 
+    font-size: 14px; 
+    font-weight: 600; 
+    margin-bottom: 10px; 
+    display: inline-block; 
+}
+
+.post-title { 
+    font-size: 32px; 
+    font-weight: 800; 
+    margin: 0 0 20px 0; 
+    line-height: 1.35; 
+    letter-spacing: -0.5px; 
+    color: #111; 
+}
+
+.post-meta { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    color: #666; 
+    font-size: 14px; 
+    border-bottom: 1px solid #eee; 
+    padding-bottom: 25px; 
+    margin-bottom: 40px; 
+}
+
+.post-meta img.avatar { 
+    border-radius: 50%; 
+    width: 40px; 
+    height: 40px; 
+    object-fit: cover; 
+}
+
+.author-name { 
+    font-weight: 700; 
+    color: #222; 
+}
+
+.post-date { 
+    color: #999; 
+}
+
+.post-content { 
+    font-size: 16px; 
+    line-height: 1.8; 
+    min-height: 300px; 
+    color: #333; 
+}
+
+.post-content p { 
+    margin-bottom: 1.5em; 
+}
+
+.post-content h2, 
+.post-content h3 { 
+    margin-top: 1.5em; 
+    margin-bottom: 0.8em; 
+}
+
+.post-content blockquote { 
+    border-left: 4px solid #00c73c; 
+    padding-left: 15px; 
+    margin-left: 0; 
+    font-style: italic; 
+    color: #555; 
+    background: #f9f9f9; 
+    padding: 15px; 
+}
+
+.post-tags { 
+    margin-top: 50px; 
+    padding-top: 20px; 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+}
+
+.post-tags a { 
+    display: inline-block; 
+    background: #f1f3f5; 
+    padding: 8px 16px; 
+    border-radius: 20px; 
+    font-size: 13px; 
+    color: #495057; 
+    font-weight: 500; 
+}
+
+.post-tags a:hover { 
+    background: #e9ecef; 
+    color: #212529; 
+}
+
+/* ==========================================================================
+   7. SNS 공유 버튼 및 더보기 레이어 (Glassmorphism)
+========================================================================== */
+.post-utilities-top { 
+    display: flex; 
+    align-items: center; 
+    gap: 6px; 
+    position: relative; 
+    margin-left: auto; 
+}
+
+.util-btn { 
+    display: inline-flex; 
+    justify-content: center; 
+    align-items: center; 
+    width: 36px; 
+    height: 36px; 
+    background: #fff; 
+    border: 1px solid #e0e0e0; 
+    border-radius: 50%; 
+    color: #555; 
+    font-size: 15px; 
+    cursor: pointer; 
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+}
+
+.util-btn:hover { 
+    background: #f8f9fa; 
+    border-color: #ccc; 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05); 
+}
+
+/* SNS 브랜드 컬러 */
+.util-btn.share-fb:hover { 
+    background: #1877F2; 
+    color: #fff; 
+    border-color: #1877F2; 
+}
+
+.util-btn.share-tw:hover { 
+    background: #000000; 
+    color: #fff; 
+    border-color: #000000; 
+}
+
+.util-btn.share-ig:hover { 
+    background: #E4405F; 
+    color: #fff; 
+    border-color: #E4405F; 
+}
+
+.util-btn.share-pin:hover { 
+    background: #E60023; 
+    color: #fff; 
+    border-color: #E60023; 
+}
+
+.util-btn.share-nv:hover { 
+    background: #03C75A; 
+    color: #fff; 
+    border-color: #03C75A; 
+}
+
+.util-btn.share-ka:hover { 
+    background: #FEE500; 
+    color: #3C1E1E; 
+    border-color: #FEE500; 
+}
+
+/* 더보기 말풍선 레이어 */
+.sns-extra-layer {
+    display: none !important;
+    position: absolute;
+    top: 42px;
+    right: 0;
+    background: #fff;
+    padding: 10px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    gap: 8px;
+    z-index: var(--z-dropdown);
+    white-space: nowrap;
+}
+
+.sns-extra-layer.show { 
+    display: flex !important; 
+    animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+}
+
+@keyframes popIn { 
+    0% { opacity: 0; transform: translateY(-10px) scale(0.95); } 
+    100% { opacity: 1; transform: translateY(0) scale(1); } 
+}
+
+/* ==========================================================================
+   8. 사이드바 및 프로필 위젯
+========================================================================== */
+.sidebar-area .widget { 
+    border: 1px solid #e5e5e5; 
+    padding: 25px 20px; 
+    margin-bottom: 30px; 
+    background: #fff; 
+    border-radius: 8px; 
+}
+
+.widget-title { 
+    font-size: 15px; 
+    font-weight: 800; 
+    margin: 0 0 18px 0; 
+    padding-bottom: 12px; 
+    border-bottom: 2px solid #333; 
+    letter-spacing: -0.3px; 
+    color: #111; 
+}
+
+.widget ul { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+}
+
+.widget li { 
+    margin-bottom: 12px; 
+    font-size: 14px; 
+    color: #555; 
+}
+
+.widget li a:hover { 
+    color: #00c73c; 
+    text-decoration: underline; 
+}
+
+.profile-wrap { 
+    text-align: left; 
+    position: relative; 
+    background: #fff; 
+    border: 1px solid #e5e5e5; 
+    border-radius: 8px; 
+    overflow: hidden; 
+    margin-bottom: 30px; 
+}
+
+.profile-img { 
+    width: 100%; 
+    height: 160px; 
+    background: #f4f4f4; 
+    object-fit: cover; 
+}
+
+.profile-img.placeholder { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    background: #f8f9fa; 
+    color: #adb5bd; 
+    font-size: 13px; 
+    font-weight: 600; 
+    text-align: center; 
+    border-bottom: 1px solid #eee; 
+    margin-bottom: 0; 
+    min-height: 160px; 
+}
+
+.profile-info-container { 
+    padding: 20px; 
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    padding: 20px 20px 15px;
+}
+
+.profile-avatar img { 
+    border-radius: 20px; 
+    width: 64px; 
+    height: 64px; 
+    object-fit: cover; 
+    border: 1px solid #eee; 
+}
+
+.profile-details { 
+    margin-left: 15px; 
+}
+
+.profile-name { 
+    font-weight: 800; 
+    font-size: 18px; 
+    color: #111; 
+    margin-bottom: 2px; 
+    letter-spacing: -0.3px; 
+}
+
+.profile-sns-id { 
+    font-size: 13px; 
+    color: #888; 
+    font-family: Tahoma, sans-serif; 
+}
+
+.profile-bio {
+    font-size: 14px;
+    color: #666;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    word-break: keep-all;
+}
+
+.profile-links {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.edit-badge { 
+    background: #b5b5b5; 
+    color: #fff; 
+    font-size: 10px; 
+    padding: 3px 6px; 
+    border-radius: 4px; 
+    font-weight: 800; 
+    margin-right: 6px; 
+    letter-spacing: 0.5px; 
+}
+
+.profile-more { 
+    color: #888; 
+    font-size: 12px; 
+    display: flex; 
+    align-items: center; 
+    font-weight: 500; 
+}
+
+.profile-more .profile-icon { 
+    color: #888; 
+    margin-left: 5px; 
+    font-size: 13px; 
+}
+
+.profile-more:hover,
+.profile-more:hover .profile-icon { 
+    color: #333; 
+}
+
+.profile-banners {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.banner-btn {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.banner-btn:hover { 
+    background: #f8f9fa; 
+    border-color: #ccc; 
+}
+
+.profile-admin-links {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    color: #777;
+    border-top: 1px solid #eee;
+    padding: 15px 20px 20px;
+}
+
+.profile-admin-links a:hover { 
+    color: #111; 
+}
+
+.widget-social .social-icons { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 10px; 
+}
+
+.social-icon { 
+    display: inline-flex; 
+    justify-content: center; 
+    align-items: center; 
+    width: 40px; 
+    height: 40px; 
+    background: #fff; 
+    border: 1px solid #eee; 
+    border-radius: 50%; 
+    font-size: 18px; 
+    color: #555; 
+    transition: all 0.2s; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02); 
+}
+
+.social-icon:hover { 
+    background: #f8f9fa; 
+    border-color: #ddd; 
+    transform: translateY(-2px); 
+    color: #111; 
+    box-shadow: 0 5px 10px rgba(0,0,0,0.05); 
+}
+
+/* ==========================================================================
+   9. 채팅형 댓글 시스템 (UI/UX 완벽 적용)
+========================================================================== */
+.comments-area { 
+    margin-top: 80px; 
+    border-top: 2px solid #222; 
+    padding-top: 40px; 
+}
+
+.comments-title { 
+    font-size: 20px; 
+    font-weight: 800; 
+    margin-bottom: 30px; 
+    color: #111; 
+}
+
+.chat-style-list { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0 0 50px 0; 
+}
+
+.chat-style-list .children { 
+    list-style: none; 
+    padding-left: 20px; 
+    margin-top: 20px; 
+    position: relative; 
+}
+
+.chat-style-list .children::before { 
+    content: ''; 
+    position: absolute; 
+    left: 0; 
+    top: 0; 
+    bottom: 0; 
+    width: 2px; 
+    background: #f0f0f0; 
+    border-radius: 2px; 
+}
+
+.chat-item { 
+    margin-bottom: 25px; 
+}
+
+.chat-wrap { 
+    display: flex; 
+    gap: 12px; 
+    align-items: flex-start; 
+}
+
+.chat-avatar img { 
+    border-radius: 40%; 
+    width: 48px; 
+    height: 48px; 
+    object-fit: cover; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+}
+
+.chat-content-wrap { 
+    display: flex; 
+    flex-direction: column; 
+    max-width: 85%; 
+}
+
+.chat-meta { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    margin-bottom: 6px; 
+}
+
+.chat-name { 
+    font-weight: 800; 
+    font-size: 14px; 
+    color: #222; 
+}
+
+.chat-date { 
+    font-size: 12px; 
+    color: #999; 
+}
+
+.chat-bubble { 
+    padding: 14px 18px; 
+    border-radius: 20px; 
+    font-size: 15px; 
+    line-height: 1.6; 
+    display: inline-block; 
+    word-break: break-all; 
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04); 
+}
+
+.chat-bubble p { 
+    margin: 0; 
+    padding: 0; 
+}
+
+.chat-bubble p + p { 
+    margin-top: 10px; 
+}
+
+.chat-reply { 
+    margin-top: 8px; 
+}
+
+.chat-reply a { 
+    font-size: 12px; 
+    color: #666; 
+    font-weight: 600; 
+    background: #f8f9fa; 
+    border: 1px solid #eee; 
+    padding: 5px 10px; 
+    border-radius: 12px; 
+    transition: all 0.2s; 
+}
+
+.chat-reply a:hover { 
+    background: #f1f3f5; 
+    color: #333; 
+}
+
+/* 우측 정렬 (내가 쓴 댓글 - 초록색) */
+.chat-right .chat-wrap { 
+    flex-direction: row-reverse; 
+} 
+
+.chat-right .chat-content-wrap { 
+    align-items: flex-end; 
+}
+
+.chat-right .chat-meta { 
+    flex-direction: row-reverse; 
+} 
+
+.chat-right .chat-bubble { 
+    background: #00c73c; 
+    color: #fff; 
+    border-top-right-radius: 4px; 
+    text-align: right; 
+}
+
+.chat-right .chat-bubble a { 
+    color: #fff; 
+    text-decoration: underline; 
+}
+
+.chat-right .chat-reply { 
+    text-align: right; 
+}
+
+/* 좌측 정렬 (상대방 댓글 - 회색) */
+.chat-left .chat-wrap { 
+    flex-direction: row; 
+}
+
+.chat-left .chat-bubble { 
+    background: #f1f3f5; 
+    color: #333; 
+    border-top-left-radius: 4px; 
+    text-align: left; 
+}
+
+.chat-left .chat-meta { 
+    justify-content: flex-start; 
+}
+
+.chat-left .chat-reply { 
+    text-align: left; 
+}
+
+/* 댓글 폼 */
+.comment-respond { 
+    background: #fafafa; 
+    padding: 30px; 
+    border-radius: 16px; 
+    border: 1px solid #eee; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.02); 
+}
+
+#reply-title { 
+    font-size: 18px; 
+    font-weight: 800; 
+    margin-bottom: 20px; 
+    color: #111; 
+}
+
+.comment-form-comment textarea { 
+    width: 100%; 
+    border: 1px solid #ddd; 
+    padding: 15px; 
+    border-radius: 12px; 
+    resize: vertical; 
+    font-family: inherit; 
+    font-size: 15px; 
+    transition: border-color 0.2s; 
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.02); 
+}
+
+.comment-form-comment textarea:focus { 
+    outline: none; 
+    border-color: #00c73c; 
+}
+
+.form-submit .submit-btn { 
+    background: #222; 
+    color: #fff; 
+    border: none; 
+    padding: 14px 30px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-weight: 700; 
+    font-size: 15px; 
+    width: 100%; 
+    transition: background 0.2s; 
+}
+
+.form-submit .submit-btn:hover {
+    background: #000;
+}
+
+/* ==========================================================================
+   9.5. 비회원 댓글 폼 입력 필드 & 아키스밋 안내
+   - 비회원: 이름·이메일·웹사이트 <input> 필드
+   - 아키스밋: .akismet-privacy-notice 스팸 안내 문구
+========================================================================== */
+
+/* 각 필드 <p> 래퍼 간격 */
+.comment-form-author,
+.comment-form-email,
+.comment-form-url {
+    margin: 0 0 16px;
+    width: 100%;
+}
+
+/* 레이블 공통 */
+.comment-respond .comment-form label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 7px;
+    letter-spacing: -0.2px;
+}
+
+/* 필수 입력 * 표시 */
+.comment-respond .required {
+    color: #e74c3c;
+    margin-left: 2px;
+}
+
+/* 이름·이메일·웹사이트 input */
+.comment-form-author input[type="text"],
+.comment-form-email input[type="email"],
+.comment-form-url input[type="url"] {
+    width: 100%;
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    font-family: inherit;
+    font-size: 15px;
+    color: #333;
+    background: #fff;
+    border-radius: var(--radius-md);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
+    box-sizing: border-box;
+}
+
+.comment-form-author input[type="text"]:focus,
+.comment-form-email input[type="email"]:focus,
+.comment-form-url input[type="url"]:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 199, 60, 0.08);
+}
+
+/* PC: 이름·이메일·웹사이트 3열 나란히 배치 */
+@media screen and (min-width: 769px) {
+    .comment-form-author,
+    .comment-form-email,
+    .comment-form-url {
+        display: inline-block;
+        width: calc(33.333% - 9px);
+        vertical-align: top;
+        margin-right: 12px;
+    }
+
+    .comment-form-url {
+        margin-right: 0;
+    }
+}
+
+/* "현재 로그인 중" 또는 "이름·이메일 필수" 안내 텍스트 */
+.comment-notes,
+.logged-in-as {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.logged-in-as a,
+.comment-notes a {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.logged-in-as a:hover,
+.comment-notes a:hover {
+    text-decoration: underline;
+}
+
+/* 댓글 폼 <p> 기본 마진 통일 */
+.comment-form > p {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+/* ---- 아키스밋 스팸 방지 안내 ---- */
+.akismet-privacy-notice,
+p.akismet-privacy-notice {
+    font-size: 12px;
+    color: #aaa;
+    margin: 20px 0 0;
+    padding: 10px 14px;
+    background: #f8f9fa;
+    border-left: 3px solid #e0e0e0;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    line-height: 1.7;
+}
+
+.akismet-privacy-notice a,
+p.akismet-privacy-notice a {
+    color: #999;
+    text-decoration: underline;
+    transition: color 0.15s;
+}
+
+.akismet-privacy-notice a:hover,
+p.akismet-privacy-notice a:hover {
+    color: #555;
+    text-decoration: none;
+}
+
+/* 아키스밋이 출력하는 숨김 필드 래퍼 (레이아웃에 영향 없도록) */
+#akismet_comment_form_privacy_notice {
+    display: block;
+}
+
+/* ==========================================================================
+   10. 모바일 반응형 강제 처리 (5열 버튼 등)
+   - 모바일 환경에서만 작동하는 특수 레이아웃을 최우선으로 적용합니다.
+========================================================================== */
+@media screen and (max-width: 768px) {
+    .mobile-only { 
+        display: block !important; 
+    }
+    
+    .desktop-only { 
+        display: none !important; 
+    }
+    
+    .container { 
+        padding: 0; 
+    }
+    
+    .site-content { 
+        flex-direction: column; 
+        margin-top: 0; 
+        gap: 0; 
+        margin-bottom: 0; 
+    }
+    
+    .sidebar-area { 
+        width: 100%; 
+        order: -1; 
+    }
+    
+    .main-area {
+        width: 100%;
+        padding: 0 20px;
+        margin-top: 20px;
+    }
+
+    /* 모바일 헤더: fixed — sticky 는 주소창 수축/팽창 시 뷰포트가 변해 상단에 틈이 생김 */
+    .site-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 14px 20px;
+        color: #fff;
+        background: var(--color-header);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        z-index: var(--z-header);
+    }
+
+    /* fixed 헤더가 플로우에서 빠지므로 콘텐츠를 헤더 높이만큼 아래로 밀어냄 */
+    .site-content {
+        margin-top: var(--mobile-header-height);
+    }
+
+    /* 관리자 바(46px, 모바일 고정) + 헤더 높이 합산 보정 */
+    body.admin-bar .site-content {
+        margin-top: calc(46px + var(--mobile-header-height));
+    }
+
+    .header-logo {
+        color: #fff;
+    }
+
+    .header-logo a {
+        color: #fff;
+    }
+    
+    .mobile-menu-toggle { 
+        display: block; 
+        color: #fff; 
+        font-size: 24px; 
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3); 
+    }
+
+    /* 모바일 프로필 (히어로 영역) */
+    .profile-wrap {
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        /* 히어로 하단에 여유 + 그린 배너와 흰 여백으로 분리 */
+        padding-bottom: 12px;
+        margin-bottom: 0;
+        background-color: #a06e50;
+    }
+
+    /* stats-today, mobile-blog-title 은 profile-wrap 직계 자식 — 직접 패딩 지정 */
+    .stats-today {
+        padding: 18px 20px 0;
+    }
+
+    .mobile-blog-title {
+        padding: 4px 20px 0;
+        font-size: 13px;
+        opacity: 0.85;
+    }
+
+    /* profile-info 모바일 패딩 축소 */
+    .profile-info {
+        padding: 10px 20px 8px;
+    }
+
+    .profile-info-container {
+        padding: 10px 20px 14px;
+    }
+
+    .profile-avatar img {
+        border: 2px solid rgba(255,255,255,0.4);
+        width: 60px;
+        height: 60px;
+    }
+    
+    /* 히어로 영역 텍스트 색상 강제 지정 (흰색) */
+    .profile-wrap.mobile-hero-bg .profile-name,
+    .profile-wrap.mobile-hero-bg .profile-sns-id,
+    .profile-wrap.mobile-hero-bg .mobile-blog-title,
+    .profile-wrap.mobile-hero-bg .stats-today,
+    .profile-wrap.mobile-hero-bg .profile-bio {
+        color: #ffffff !important;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    .profile-name { 
+        font-size: 22px; 
+        margin-bottom: 4px; 
+    }
+    
+    div.profile-share-btn { 
+        display: flex !important; 
+        margin-left: auto; 
+        font-size: 24px; 
+        cursor: pointer; 
+        color: #fff; 
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3); 
+    }
+
+    /* ------------------------------------------------------------------------
+       [필수] 모바일 5열 버튼 (Grid 고정)
+    ------------------------------------------------------------------------ */
+    div.mobile-action-grid {
+        display: grid !important;
+        grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr !important;
+        gap: 8px !important;
+        width: 100% !important;
+        padding: 0 20px !important;
+        min-height: 44px !important;
+        margin-top: 12px !important;
+        align-items: stretch !important;
+    }
+
+    .grid-btn {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(255, 255, 255, 0.22) !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        border-radius: 10px !important;
+        color: #fff !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        cursor: pointer !important;
+        padding: 8px 4px !important;
+        margin: 0 !important;
+        transition: background 0.2s !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .grid-btn:active {
+        background: rgba(255, 255, 255, 0.4) !important;
+    }
+
+    .grid-btn i {
+        font-size: 18px !important;
+    }
+
+    .grid-btn.btn-home-edit {
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        gap: 6px !important;
+        padding: 8px 8px !important;
+    }
+
+    .grid-btn.btn-home-edit i {
+        font-size: 14px !important;
+    }
+
+    /* 모바일 톡톡하기 배너 (가로 플렉스 강제) */
+    /* index.php의 .cta-bar는 PC 전용, 모바일은 sidebar의 mobile-green-banner가 담당 */
+    .cta-bar {
+        display: none;
+    }
+
+    div.mobile-green-banner {
+        display: flex !important;
+        /* --cta-bg 는 sidebar.php 인라인 style 로 주입 — 없으면 기본 그린 사용 */
+        background: var(--cta-bg, #00c73c) !important;
+        color: #fff !important;
+        padding: 10px 20px !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        gap: 12px !important;
+    }
+
+    .mobile-green-banner .btn {
+        flex-shrink: 0;
+        border: 1px solid rgba(255,255,255,0.55);
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 700;
+        background: rgba(0,0,0,0.08);
+        white-space: nowrap;
+    }
+
+    /* 그린 배너 아래 → 글 목록 위 숨통 */
+    .sidebar-area {
+        margin-bottom: 0;
+    }
+
+    /* 모바일 글 목록 디자인 */
+    .post-list-wrap { 
+        border-top: none; 
+        border-bottom: 8px solid #f5f5f5; 
+        margin: 0 -20px 30px; 
+        padding: 0 20px 25px; 
+    }
+    
+    .post-list-header {
+        border-bottom: none;
+        padding: 12px 0 8px;
+    }
+    
+    .post-list-header h2 { 
+        font-size: 18px; 
+    }
+    
+    .post-list-item {
+        flex-direction: column;
+        padding: 22px 0;
+        border-bottom: 1px solid #f0f0f0;
+        align-items: flex-start;
+    }
+    
+    .post-list-item a { 
+        font-size: 17px; 
+        line-height: 1.4; 
+    }
+    
+    /* 모바일 요약 보이기 강제 */
+    .post-list-excerpt { 
+        display: -webkit-box !important; 
+        -webkit-line-clamp: 2; 
+        -webkit-box-orient: vertical; 
+        overflow: hidden; 
+        margin-bottom: 12px; 
+        color: #666; 
+        font-size: 14px; 
+    }
+    
+    .post-list-meta-mobile { 
+        display: flex !important; 
+        justify-content: space-between; 
+        font-size: 13px; 
+        color: #999; 
+        margin-top: auto; 
+        width: 100%; 
+    }
+    
+    /* 모바일 싱글 포스트 본문 설정 */
+    .post-title { 
+        font-size: 24px; 
+    }
+    
+    .post-meta { 
+        flex-wrap: wrap; 
+    }
+    
+    .post-utilities-top { 
+        margin-left: 0; 
+        margin-top: 10px; 
+        width: 100%; 
+        justify-content: flex-end; 
+    }
+    
+    /* 모바일 댓글창 핏 맞춤 */
+    .chat-content-wrap {
+        max-width: 88%;
+    }
+
+    .chat-bubble {
+        font-size: 14px;
+        padding: 12px 15px;
+    }
+
+    /* 모바일: 비회원 댓글 폼 — 3열 → 1열 */
+    .comment-form-author,
+    .comment-form-email,
+    .comment-form-url {
+        display: block !important;
+        width: 100% !important;
+        margin-right: 0 !important;
+    }
+
+    /* 모바일: 댓글 폼 컨테이너 여백 축소 */
+    .comment-respond {
+        padding: 20px 16px;
+    }
+
+    /* 모바일: 아키스밋 안내 여백 */
+    .akismet-privacy-notice,
+    p.akismet-privacy-notice {
+        margin-top: 16px;
+        font-size: 11px;
+    }
+}
